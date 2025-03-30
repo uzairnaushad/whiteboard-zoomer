@@ -12,6 +12,7 @@ export interface WhiteboardState {
   isDrawing: boolean;
   shapes: ('rect' | 'circle' | 'triangle')[];
   selectedShapeIndex: number;
+  showGrid: boolean;
 }
 
 export const useWhiteboard = () => {
@@ -27,6 +28,7 @@ export const useWhiteboard = () => {
     isDrawing: false,
     shapes: ['rect', 'circle', 'triangle'],
     selectedShapeIndex: 0,
+    showGrid: false,
   });
 
   const addToHistory = (canvas: fabric.Canvas) => {
@@ -155,6 +157,28 @@ export const useWhiteboard = () => {
     addToHistory(whiteboard.canvas);
   };
 
+  const addLine = () => {
+    if (!whiteboard.canvas) return;
+    
+    const centerX = whiteboard.canvas.getWidth() / 2;
+    const centerY = whiteboard.canvas.getHeight() / 2;
+    
+    const line = new fabric.Line(
+      [centerX - 50, centerY, centerX + 50, centerY],
+      {
+        stroke: whiteboard.activeColor,
+        strokeWidth: 3,
+        cornerSize: 8,
+        transparentCorners: false,
+      }
+    );
+    
+    whiteboard.canvas.add(line);
+    whiteboard.canvas.setActiveObject(line);
+    whiteboard.canvas.renderAll();
+    addToHistory(whiteboard.canvas);
+  };
+
   const addText = () => {
     if (!whiteboard.canvas) return;
 
@@ -246,6 +270,13 @@ export const useWhiteboard = () => {
     document.body.removeChild(link);
   };
 
+  const toggleGrid = () => {
+    setWhiteboard(prev => ({
+      ...prev,
+      showGrid: !prev.showGrid
+    }));
+  };
+
   const initialiseCanvas = (canvasElement: HTMLCanvasElement) => {
     // Store canvas element reference
     canvasRef.current = canvasElement;
@@ -318,11 +349,13 @@ export const useWhiteboard = () => {
     setBrushSize,
     addShape,
     addText,
+    addLine,
     addImage,
     addVideo,
     clearCanvas,
     undo,
     redo,
     download,
+    toggleGrid,
   };
 };

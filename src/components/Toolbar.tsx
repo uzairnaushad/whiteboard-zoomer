@@ -11,7 +11,8 @@ import {
   Triangle, 
   Image as ImageIcon, 
   Video, 
-  Play
+  Play,
+  MinusIcon
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
@@ -23,6 +24,7 @@ interface ToolbarProps {
   onToolChange: (tool: WhiteboardState['activeTool']) => void;
   onAddShape: (shape: 'rect' | 'circle' | 'triangle') => void;
   onAddText: () => void;
+  onAddLine: () => void;
   onBrushSizeChange: (size: number) => void;
   onImageUpload: () => void;
   onVideoUpload: () => void;
@@ -35,6 +37,7 @@ export const Toolbar = ({
   onToolChange,
   onAddShape,
   onAddText,
+  onAddLine,
   onBrushSizeChange,
   onImageUpload,
   onVideoUpload,
@@ -106,6 +109,14 @@ export const Toolbar = ({
       >
         <Type className="h-5 w-5" />
         <span className="custom-tooltip">Add Text</span>
+      </button>
+      
+      <button
+        className="tool-button has-tooltip"
+        onClick={onAddLine}
+      >
+        <MinusIcon className="h-5 w-5" />
+        <span className="custom-tooltip">Add Line</span>
       </button>
       
       <button

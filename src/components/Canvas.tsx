@@ -1,5 +1,5 @@
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useWhiteboard } from '@/hooks/useWhiteboard';
 import { Navbar } from '@/components/Navbar';
 import { Toolbar } from '@/components/Toolbar';
@@ -7,8 +7,8 @@ import { ColorPicker } from '@/components/ColorPicker';
 import { ImageUploader } from '@/components/ImageUploader';
 import { VideoEmbed } from '@/components/VideoEmbed';
 import { AnimationControls } from '@/components/AnimationControls';
+import { Minimap } from '@/components/Minimap';
 import { toast } from 'sonner';
-import { useState } from 'react';
 
 export const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,15 +22,18 @@ export const Canvas = () => {
     addText,
     addImage,
     addVideo,
+    addLine,
     clearCanvas,
     undo,
     redo,
     download,
+    toggleGrid,
   } = useWhiteboard();
   
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [videoDialogOpen, setVideoDialogOpen] = useState(false);
   const [animationDialogOpen, setAnimationDialogOpen] = useState(false);
+  const [minimapOpen, setMinimapOpen] = useState(false);
   
   useEffect(() => {
     if (canvasRef.current) {
@@ -66,12 +69,14 @@ export const Canvas = () => {
         onRedo={redo}
         onClear={handleClearCanvas}
         onDownload={download}
+        onToggleGrid={() => toggleGrid()}
+        onToggleMinimap={() => setMinimapOpen(!minimapOpen)}
       />
       
       <div className="flex-1 relative overflow-hidden">
         <div className="absolute inset-0 p-8">
           <div className="w-full h-full relative">
-            <div className="canvas-container w-full h-full">
+            <div className={`canvas-container w-full h-full ${whiteboard.showGrid ? 'bg-grid' : ''}`}>
               <canvas
                 ref={canvasRef}
                 className="touch-none w-full h-full"
@@ -91,11 +96,14 @@ export const Canvas = () => {
           onToolChange={setActiveTool}
           onAddShape={addShape}
           onAddText={addText}
+          onAddLine={addLine}
           onBrushSizeChange={setBrushSize}
           onImageUpload={handleImageUpload}
           onVideoUpload={handleVideoUpload}
           onAnimationPlay={handleAnimationPlay}
         />
+        
+        {minimapOpen && <Minimap canvas={whiteboard.canvas} />}
         
         <ImageUploader
           open={imageDialogOpen}

@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Undo, Redo, Download, Trash2, Info } from "lucide-react";
+import { Undo, Redo, Download, Trash2, Info, Grid, Map } from "lucide-react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +22,18 @@ interface NavbarProps {
   onRedo: () => void;
   onClear: () => void;
   onDownload: () => void;
+  onToggleGrid: () => void;
+  onToggleMinimap: () => void;
 }
 
-export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => {
+export const Navbar = ({ 
+  onUndo, 
+  onRedo, 
+  onClear, 
+  onDownload, 
+  onToggleGrid,
+  onToggleMinimap
+}: NavbarProps) => {
   const [infoOpen, setInfoOpen] = useState(false);
   
   return (
@@ -42,6 +51,7 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
           size="icon" 
           onClick={onUndo}
           className="transition-all duration-200 hover:bg-muted"
+          title="Undo"
         >
           <Undo className="h-5 w-5" />
         </Button>
@@ -51,6 +61,7 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
           size="icon" 
           onClick={onRedo}
           className="transition-all duration-200 hover:bg-muted"
+          title="Redo"
         >
           <Redo className="h-5 w-5" />
         </Button>
@@ -58,8 +69,29 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
         <Button 
           variant="ghost" 
           size="icon" 
+          onClick={onToggleGrid}
+          className="transition-all duration-200 hover:bg-muted"
+          title="Toggle Grid"
+        >
+          <Grid className="h-5 w-5" />
+        </Button>
+        
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onToggleMinimap}
+          className="transition-all duration-200 hover:bg-muted"
+          title="Toggle Minimap"
+        >
+          <Map className="h-5 w-5" />
+        </Button>
+        
+        <Button 
+          variant="ghost" 
+          size="icon" 
           onClick={onDownload}
           className="transition-all duration-200 hover:bg-muted"
+          title="Download"
         >
           <Download className="h-5 w-5" />
         </Button>
@@ -70,6 +102,7 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
               variant="ghost" 
               size="icon"
               className="transition-all duration-200 hover:bg-muted"
+              title="Clear Canvas"
             >
               <Trash2 className="h-5 w-5 text-destructive" />
             </Button>
@@ -87,6 +120,7 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
               variant="ghost" 
               size="icon"
               className="transition-all duration-200 hover:bg-muted"
+              title="Information"
             >
               <Info className="h-5 w-5" />
             </Button>
@@ -108,7 +142,7 @@ export const Navbar = ({ onUndo, onRedo, onClear, onDownload }: NavbarProps) => 
                 The controls at the top let you undo/redo actions and download your work.
               </p>
               <p className="text-sm text-muted-foreground">
-                Version 1.0.0 | Made with ♥
+                Version 1.1.0 | Made with ♥
               </p>
             </div>
           </DialogContent>

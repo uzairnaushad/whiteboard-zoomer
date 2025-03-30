@@ -99,6 +99,13 @@
   transition: transform 0.3s ease-out;
 }
 
+.bg-grid {
+  background-color: white;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
 .whiteboard-container {
   @apply w-full h-full relative overflow-hidden;
 }
@@ -132,4 +139,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-tool-icon;
+}
+
+/* Color groups */
+.color-group {
+  @apply flex flex-col gap-1;
+}
+
+.color-group-title {
+  @apply text-xs text-muted-foreground font-medium;
+}
+
+.color-group-swatches {
+  @apply grid grid-cols-5 gap-1;
 }
