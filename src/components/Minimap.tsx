@@ -36,14 +36,18 @@ export const Minimap = ({ canvas }: MinimapProps) => {
       // Add background
       minimapCanvas.setBackgroundColor('#ffffff', () => {
         // Load objects from main canvas
-        fabric.util.enlivenObjects(mainCanvasJSON.objects, (objects) => {
-          objects.forEach(obj => {
-            obj.scale(scaleFactor);
-            minimapCanvas.add(obj);
-          });
-          
+        if (mainCanvasJSON.objects && mainCanvasJSON.objects.length > 0) {
+          fabric.util.enlivenObjects(mainCanvasJSON.objects, (objects) => {
+            objects.forEach(obj => {
+              obj.scale(scaleFactor);
+              minimapCanvas.add(obj);
+            });
+            
+            minimapCanvas.renderAll();
+          }, 'fabric');
+        } else {
           minimapCanvas.renderAll();
-        }, 'fabric');
+        }
       });
     };
     
@@ -64,7 +68,7 @@ export const Minimap = ({ canvas }: MinimapProps) => {
   }, [canvas]);
   
   return (
-    <div className="fixed right-4 bottom-4 p-2 rounded-lg bg-white bg-opacity-90 backdrop-blur-sm shadow-lg border border-border animate-fade-in">
+    <div className="fixed right-4 bottom-4 p-2 rounded-lg bg-white bg-opacity-90 backdrop-blur-sm shadow-lg border border-border animate-fade-in z-10">
       <h3 className="text-xs font-medium mb-1 text-center">Canvas Overview</h3>
       <canvas 
         ref={minimapRef} 

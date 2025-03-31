@@ -34,14 +34,16 @@ export const Canvas = () => {
   const [videoDialogOpen, setVideoDialogOpen] = useState(false);
   const [animationDialogOpen, setAnimationDialogOpen] = useState(false);
   const [minimapOpen, setMinimapOpen] = useState(false);
+  const [canvasInitialized, setCanvasInitialized] = useState(false);
   
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef.current && !canvasInitialized) {
       const cleanup = initialiseCanvas(canvasRef.current);
+      setCanvasInitialized(true);
       toast.success('Canvas ready! Start creating your presentation.');
       return cleanup;
     }
-  }, []);
+  }, [canvasRef, initialiseCanvas, canvasInitialized]);
   
   const handleImageUpload = () => {
     setImageDialogOpen(true);
@@ -76,10 +78,13 @@ export const Canvas = () => {
       <div className="flex-1 relative overflow-hidden">
         <div className="absolute inset-0 p-8">
           <div className="w-full h-full relative">
-            <div className={`canvas-container w-full h-full ${whiteboard.showGrid ? 'bg-grid' : ''}`}>
+            <div 
+              className={`canvas-container w-full h-full ${whiteboard.showGrid ? 'bg-grid' : ''}`}
+              style={{ touchAction: 'none' }}
+            >
               <canvas
                 ref={canvasRef}
-                className="touch-none w-full h-full"
+                className="touch-none w-full h-full border border-gray-200 rounded-lg"
               />
             </div>
           </div>
